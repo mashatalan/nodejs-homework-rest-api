@@ -1,5 +1,5 @@
-const contactsAddSchema = require('../schemas/contacts-schemas');
-const HttpError = require('../helpers/HttpError');
+const contactsAddSchema = require('../schemas');
+const HttpError = require('../helpers');
 const {
   updateContactById,
   removeContact,
@@ -7,7 +7,7 @@ const {
   listContacts,
   getContactById,
   updateStatusContact,
-} = require('../repositories/contacts');
+} = require('../repositories');
 
 
 const getAllContacts = async (req, res, next) => {
