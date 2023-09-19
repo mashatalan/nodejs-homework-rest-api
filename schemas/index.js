@@ -1,13 +1,13 @@
-const contactsAddSchema = require('./contacts-schemas');
-const userSignupSchema = require('./auth-schema');
-const userSigninSchema = require('./auth-schema');
-const updateSubscriptionSchema = require('./auth-schema');
-
-
-module.exports = contactsAddSchema;
+const { contactsAddSchema } = require('./contacts-schemas');
+const {
+  userSignupSchema,
+  userSigninSchema,
+  updateSubscriptionSchema
+} = require('./auth-schema');
 
 module.exports = {
+  contactsAddSchema,
   userSigninSchema,
   updateSubscriptionSchema,
   userSignupSchema,
-}
+};

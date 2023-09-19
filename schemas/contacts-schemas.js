@@ -7,4 +7,6 @@ const contactsAddSchema = Joi.object({
   favorite: Joi.bool().optional(),
 })
 
-module.exports = contactsAddSchema;
+module.exports = {
+  contactsAddSchema,
+};
