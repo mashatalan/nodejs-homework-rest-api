@@ -6,7 +6,7 @@ const contactSchema = new Schema({
     type: String,
     required: [true, 'Set name for contact'],
   },
-  email:{
+  email: {
     type: String,
   },
   phone: {
@@ -15,7 +15,13 @@ const contactSchema = new Schema({
   favorite: {
     type: Boolean,
     default: false,
-  }
-});
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
+
+}, {versionKey: false, timestamps: true});
 
 module.exports = model('contact', contactSchema);
