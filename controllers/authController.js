@@ -92,7 +92,7 @@ const getCurrentUser = (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 
 module.exports = {
@@ -100,4 +100,4 @@ module.exports = {
   signin,
   signout,
   getCurrentUser,
-}
+};

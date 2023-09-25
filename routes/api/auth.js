@@ -7,7 +7,6 @@ const {signup, signin, signout, getCurrentUser} = require('../../controllers');
 const authRouter = express.Router();
 
 
-// маршруты для регистации
 authRouter.post('/register', validateBody(userSignupSchema), signup);
 authRouter.post('/login', validateBody(userSigninSchema), signin);
 authRouter.post('/logout', authenticate, signout);
