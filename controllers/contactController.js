@@ -1,13 +1,12 @@
-const contactsAddSchema = require('../schemas/contacts-schemas');
-const HttpError = require('../helpers/HttpError');
+const {contactsAddSchema} = require('../schemas');
+const {HttpError} = require('../helpers');
 const {
   updateContactById,
-  removeContact,
   addContact,
   listContacts,
   getContactById,
   updateStatusContact,
-} = require('../repositories/contacts');
+} = require('../repositories');
 
 
 const getAllContacts = async (req, res, next) => {
@@ -24,7 +23,7 @@ const getContact = async (req, res, next) => {
     const {contactId} = req.params;
     const result = await getContactById(contactId);
     if (!result) {
-      throw HttpError(404, `Contact with id ${contactId} not found`);
+      return next(HttpError(404, `Contact with id ${contactId} not found`));
     }
     res.json(result);
   } catch (error) {
@@ -36,12 +35,12 @@ const updateContact = async (req, res, next) => {
   try {
     const {error} = contactsAddSchema.validate(req.body);
     if (error) {
-      throw HttpError(400, error.message);
+      return next(HttpError(400, error.message));
     }
     const {contactId} = req.params;
     const result = await updateContactById(contactId, req.body);
     if (!result) {
-      throw HttpError(404, `Contact with id ${contactId} not found`);
+      return next(HttpError(404, `Contact with id ${contactId} not found`));
     }
 
     res.json(result);
@@ -54,10 +53,11 @@ const createContact = async (req, res, next) => {
   try {
     const {error} = contactsAddSchema.validate(req.body);
     if (error) {
-      throw HttpError(400, error.message);
+      return next(HttpError(400, error.message));
     }
     const {name, email, phone, favorite} = req.body;
-    const result = await addContact(name, email, phone, favorite);
+    const {_id: owner} = req.user;
+    const result = await addContact(name, email, phone, favorite, owner);
     res.status(201).json(result);
   } catch (error) {
     next(error);
@@ -67,13 +67,15 @@ const createContact = async (req, res, next) => {
 const deleteContact = async (req, res, next) => {
   try {
     const {contactId} = req.params;
-    const result = await removeContact(contactId);
-    if (!result) {
-      throw HttpError(404, `Contact with id ${contactId} not found`);
+    const contact = await getContactById(contactId);
+    console.log('result', contact);
+    if (!contact) {
+      return next(HttpError(404, `Contact with id ${contactId} not found`));
     }
+    await contact.deleteOne();
     res.json({
-      message: "Delete success"
-    })
+      message: 'Delete success',
+    });
   } catch (error) {
     next(error);
   }

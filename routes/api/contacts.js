@@ -8,12 +8,16 @@ const {
   updateContactFavorite,
 } = require('../../controllers/contactController');
 
+const {authenticate} = require('../../middlewares');
+
 
 const router = express.Router();
 
-router.get('/', getAllContacts)
+router.use(authenticate);
 
-router.get('/:contactId', getContact)
+router.get('/', getAllContacts);
+
+router.get('/:contactId', getContact);
 
 router.post('/', createContact);
 
